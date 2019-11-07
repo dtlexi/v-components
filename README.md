@@ -1,18 +1,72 @@
 # v-components
 
-> A Vue.js project
+## upload
 
-## Build Setup
-
-``` bash
-# install dependencies
-npm install
-
-# serve with hot reload at localhost:8080
-npm run dev
-
-# build for production with minification
-npm run build
+### basic ues
+```
+<v-upload
+    params="ProjectProfitCalcAffix"
+    :on-success="success"
+    :on-remove="handleRemove"
+    :limit="2"
+></v-upload>
 ```
 
-For detailed explanation on how things work, consult the [docs for vue-loader](http://vuejs.github.io/vue-loader).
+## right menu
+
+### basic ues
+```
+<v-menu :items="menuItems"></v-menu>
+
+export default {
+  name: "app",
+  data() {
+    return {
+      menuItems: [
+        [
+          {
+            title: "查看日志",
+            show: () => {
+              return this.type == 1;
+            },
+            click: function(item) {
+              console.log(item);
+              alert(123);
+            }
+          },
+          {
+            title: "取消订单",
+            show: () => {
+              return this.type == 2;
+            }
+          },
+          {
+            title: "拼团",
+            show: () => {
+              return this.type == 3;
+            }
+          },
+          {
+            title: "基础信息",
+            show: () => {
+              return this.type == 4;
+            }
+          }
+        ],
+        [
+          { title: "查看日志", show: false },
+          { title: "取消订单" },
+          { title: "拼团" },
+          { title: "基础信息" }
+        ],
+        [
+          { title: "查看日志" },
+          { title: "取消订单" },
+          { title: "拼团" },
+          { title: "基础信息" }
+        ]
+      ]
+    };
+  }
+};
+```
