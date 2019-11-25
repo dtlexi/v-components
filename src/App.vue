@@ -1,5 +1,5 @@
 <template>
-  <div id="app" @click="cilckme" style="width:100%;height:100px" @contextmenu="is_show=true">
+  <div id="app" style="width:100%;height:100px" @contextmenu="is_show=true">
     <v-upload
       params="ProjectProfitCalcAffix"
       :on-success="success"
@@ -20,7 +20,7 @@
     <v-menu :items="menuItems"></v-menu>
 
     <div class="filter-container">
-      <el-input v-model="search.name" placeholder="项目名称" style="width: 200px;" class="filter-item"/>
+      <el-input v-model="search.name" placeholder="项目名称" style="width: 200px;" class="filter-item" />
       <!-- <el-select v-model="listQuery.importance" placeholder="Imp" clearable style="width: 90px" class="filter-item">
         <el-option v-for="item in importanceOptions" :key="item" :label="item" :value="item" />
       </el-select>
@@ -29,10 +29,12 @@
       </el-select>
       <el-select v-model="listQuery.sort" style="width: 140px" class="filter-item" @change="handleFilter">
         <el-option v-for="item in sortOptions" :key="item.key" :label="item.label" :value="item.key" />
-      </el-select> -->
+      </el-select>-->
     </div>
 
-    <v-table :url="url" :column="colunm" :search="search"></v-table>
+    <v-table ref="table" :url="url" :column="colunm" :search="search"></v-table>
+
+    <input type="button" value="点我" @click="cilckme" />
   </div>
 </template>
 
@@ -54,7 +56,7 @@ export default {
             "https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100"
         }
       ],
-      type: 1,
+      type: 10,
       is_show: true,
       menuItems: [
         [
@@ -65,7 +67,6 @@ export default {
               return this.type == 1;
             },
             click: function(item) {
-              console.log(item);
               alert(123);
             }
           },
@@ -90,15 +91,50 @@ export default {
         ],
         [
           { title: "查看日志", show: false },
-          { title: "取消订单" },
-          { title: "拼团" },
-          { title: "基础信息" }
+          {
+            title: "取消订单",
+            show: function() {
+              return false;
+            }
+          },
+          {
+            title: "拼团",
+            show: function() {
+              return false;
+            }
+          },
+          {
+            title: "基础信息",
+            show: function() {
+              return false;
+            }
+          }
         ],
         [
-          { title: "查看日志" },
-          { title: "取消订单" },
-          { title: "拼团" },
-          { title: "基础信息" }
+          {
+            title: "查看日志",
+            show: function() {
+              return false;
+            }
+          },
+          {
+            title: "取消订单",
+            show: function() {
+              return false;
+            }
+          },
+          {
+            title: "拼团",
+            show: function() {
+              return false;
+            }
+          },
+          {
+            title: "基础信息",
+            show: function() {
+              return false;
+            }
+          }
         ]
       ],
       colunm: [
@@ -115,8 +151,8 @@ export default {
       url: "/StudyCampOrder/FindCampOrderByPage",
       search: {
         index: 1,
-        name:'',
-        status:0
+        name: "",
+        status: 0
       }
     };
   },
@@ -132,7 +168,7 @@ export default {
       console.log(fileList);
     },
     cilckme() {
-      this.type++;
+      this.$refs.table.load();
     }
   }
 };

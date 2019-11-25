@@ -4,6 +4,7 @@
     :style="{'display': 'block','left': location.x+'px','top':  location.y+'px','position': 'fixed'}"
     v-show="is_show"
     v-on:mouseleave.stop="hide"
+    v-if="showCount > 0"
   >
     <div
       class="group"
@@ -17,8 +18,7 @@
         v-show="item.show!==false&&(typeof(item.show)=='function'?item.show()!==false:true)"
         :key="index"
         @click.stop="click(item)"
-      >
-      {{item.title}}</a>
+      >{{item.title}}</a>
     </div>
   </div>
 </template>
@@ -60,9 +60,10 @@ export default {
       if (item.click && typeof item.click == "function") {
         item.click(item);
       }
-      this.is_show=false;
+      this.is_show = false;
     },
     show(e) {
+      console.log(this.showCount);
       this.is_show = true;
     },
     move(e) {
@@ -84,7 +85,6 @@ export default {
     }
   },
   created: function() {
-    console.log(this.is_show);
     let vue = this;
     document.oncontextmenu = function(e) {
       vue.move(e);
@@ -95,6 +95,23 @@ export default {
         e.preventDefault();
       }
     };
+  },
+  computed: {
+    showCount() {
+      let count = 0;
+      this.items.forEach(el => {
+        el.forEach(item => {
+          if (typeof item.show === "function" && item.show()) {
+            count++;
+          } else if (item.show === true) {
+            count++;
+          }else if(item.show===undefined){
+            count++;
+          }
+        });
+      });
+      return count;
+    }
   }
 };
 </script>

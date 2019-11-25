@@ -1,10 +1,9 @@
 <template>
   <div>
-    <el-table :data="list" border style="width: 100%">
+    <el-table :data="list" v-loading="loading" border style="width: 100%" @row-contextmenu="rowContextmenuHandler">
       <el-table-column
         v-for="(item,index) in column"
         :key="index"
-        v-loading="loading"
         :label="item.title"
         :width="item.width"
       >
@@ -32,7 +31,7 @@ export default {
   name: "vTable",
   data() {
     return {
-      total: 20,
+      total: 0,
       page_index: this.page,
       page_size: this.size,
       list: undefined,
@@ -90,18 +89,21 @@ export default {
             this.$message.error("加载失败");
           });
       }
+    },
+    rowContextmenuHandler(row,col,evn){
+      this.$emit("row-contextmenu",row,col,evn);
     }
   },
   watch: {
-    "search": {
+    search: {
       handler(val) {
-          this.page_index=1;
-          this.load();
+        this.page_index = 1;
+        this.load();
       },
       deep: true
     },
-    "page_index":function(val){
-        this.load();
+    page_index: function(val) {
+      this.load();
     }
   }
 };
